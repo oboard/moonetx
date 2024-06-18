@@ -1,0 +1,16 @@
+{
+  "name": "oboard/moonetx",
+  "version": "0.1.0",
+  "deps": {
+  },
+  "readme": "README.md",
+  "repository": "https://github.com/oboard/moonetx",
+  "license": "MIT",
+  "keywords": [
+    "moonbit",
+    "moonetx",
+    "network",
+    "networkx"
+  ],
+  "description": "MoonBit网络分析扩展"
+}
