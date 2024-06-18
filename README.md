@@ -17,7 +17,7 @@
 ## 🚀Getting Started
 
 ```sh
-moon install oboard/numoon
+moon install oboard/moonetx
 ```
 
 > Graph
