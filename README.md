@@ -1,4 +1,6 @@
-# oboard/numoon
+# oboard/moonetx
+
+> MoonBit Network Analysis Library
 
 ## 📖Table of Contents
 
