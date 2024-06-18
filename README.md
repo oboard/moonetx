@@ -17,7 +17,7 @@
 ## 🚀Getting Started
 
 ```sh
-moon install oboard/moonetx
+moon add oboard/moonetx
 ```
 
 > Graph
