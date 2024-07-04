@@ -15,7 +15,7 @@ pub fn Graph::add_node[X](self : Graph[X], node : X) -> Unit {
 
 /// add_nodes_from adds the given nodes to the graph.
 pub fn Graph::add_nodes_from[X](self : Graph[X], nodes : Array[X]) -> Unit {
-  nodes.iter(fn(node) { self.add_node(node) })
+  nodes.each(fn(node) { self.add_node(node) })
 }
 
 /// remove_node removes the node with the given index from the graph and returns it.
@@ -29,7 +29,7 @@ pub fn Graph::remove_nodes_from[X](
   idxs : Array[Int]
 ) -> Array[X] {
   let removed = []
-  idxs.iter(fn(idx) { removed.push(self.remove_node(idx)) })
+  idxs.each(fn(idx) { removed.push(self.remove_node(idx)) })
   removed
 }
 
@@ -40,13 +40,18 @@ pub fn Graph::add_edge[X](
   to : Int,
   ~weight : Double = 1.0
 ) -> Unit {
-  while self.edges.length() <= from {
+  let max = self.nodes.length() - 1
+  while self.edges.length() <= max {
     self.edges.push([])
   }
-  if self.edges[from].length() <= to {
-    self.edges[from].resize(to + 1, 0.0)
+  if self.edges[from].length() <= max {
+    self.edges[from].resize(max + 1, 0.0)
+  }
+  if self.edges[to].length() <= max {
+    self.edges[to].resize(max + 1, 0.0)
   }
   self.edges[from][to] = weight
+  self.edges[to][from] = weight
 }
 
 /// add_edges_from adds the given edges to the graph.
@@ -55,16 +60,10 @@ pub fn Graph::add_edges_from[X](
   edges : Array[(Int, Int)],
   ~weight : Double = 1.0
 ) -> Unit {
-  edges.iter(
+  edges.each(
     fn(edge) {
       let (from, to) = edge
-      while self.edges.length() <= from {
-        self.edges.push([])
-      }
-      if self.edges[from].length() <= to {
-        self.edges[from].resize(to + 1, 0.0)
-      }
-      self.edges[from][to] = weight
+      self.add_edge(from, to, ~weight)
     },
   )
 }
@@ -177,7 +176,7 @@ pub fn Graph::is_connected[X](self : Graph[X]) -> Bool {
         if visited[current] == false {
           visited[current] = true
           visited_count = visited_count + 1
-          self.neighbors(current).iter(
+          self.neighbors(current).each(
             fn(neighbor) {
               if visited[neighbor] == false {
                 queue.push(neighbor)
@@ -203,7 +202,7 @@ pub fn Graph::is_bipartite[X](self : Graph[X]) -> Bool {
         if color[current] == -1 {
           color[current] = 0
           color_count = color_count - 1
-          self.neighbors(current).iter(
+          self.neighbors(current).each(
             fn(neighbor) {
               if color[neighbor] == -1 {
                 color[neighbor] = 1 - color[current]
@@ -233,7 +232,7 @@ pub fn Graph::is_tree[X](self : Graph[X]) -> Bool {
         if visited[current] == false {
           visited[current] = true
           visited_count = visited_count + 1
-          self.neighbors(current).iter(
+          self.neighbors(current).each(
             fn(neighbor) {
               if visited[neighbor] == false {
                 if self.has_edge(current, neighbor) == false {
@@ -263,7 +262,7 @@ pub fn Graph::is_dag[X](self : Graph[X]) -> Bool {
         if visited[current] == false {
           visited[current] = true
           visited_count = visited_count + 1
-          self.neighbors(current).iter(
+          self.neighbors(current).each(
             fn(neighbor) {
               if visited[neighbor] == false {
                 if self.has_edge(current, neighbor) == false {
@@ -438,7 +437,7 @@ pub fn Graph::dijkstra_path[X](
     let current = queue.pop()
     match current {
       Some(current) =>
-        self.neighbors(current).iter(
+        self.neighbors(current).each(
           fn(neighbor) {
             let alt = dist[current] + self.edges[current][neighbor]
             if alt < dist[neighbor] {

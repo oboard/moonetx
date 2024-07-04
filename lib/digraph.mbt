@@ -16,7 +16,7 @@ pub fn DiGraph::add_node[X](self : DiGraph[X], node : X) -> Unit {
 
 /// Adds a list of nodes to the graph.
 pub fn DiGraph::add_nodes_from[X](self : DiGraph[X], nodes : Array[X]) -> Unit {
-  nodes.iter(fn(node) { self.add_node(node) })
+  nodes.each(fn(node) { self.add_node(node) })
 }
 
 /// Removes a node from the graph and returns it.
@@ -30,7 +30,7 @@ pub fn DiGraph::remove_nodes_from[X](
   idxs : Array[Int]
 ) -> Array[X] {
   let removed = []
-  idxs.iter(fn(idx) { removed.push(self.remove_node(idx)) })
+  idxs.each(fn(idx) { removed.push(self.remove_node(idx)) })
   removed
 }
 
@@ -56,7 +56,7 @@ pub fn DiGraph::add_edges_from[X](
   edges : Array[(Int, Int)],
   ~weight : Double = 1.0
 ) -> Unit {
-  edges.iter(
+  edges.each(
     fn(edge) {
       let (from, to) = edge
       while self.edges.length() <= from {
@@ -171,14 +171,14 @@ pub fn DiGraph::degree[X](self : DiGraph[X], idx : Int) -> Int {
 /// Returns the in-degree of the given node.
 pub fn DiGraph::in_degree[X](self : DiGraph[X], idx : Int) -> Int {
   let mut degree = 0
-  self.edges[idx].iter(fn(weight) { if weight > 0.0 { degree = degree + 1 } })
+  self.edges[idx].each(fn(weight) { if weight > 0.0 { degree = degree + 1 } })
   degree
 }
 
 /// Returns the out-degree of the given node.
 pub fn DiGraph::out_degree[X](self : DiGraph[X], idx : Int) -> Int {
   let mut degree = 0
-  self.edges.iter(
+  self.edges.each(
     fn(row) {
       if row.length() > idx {
         if row[idx] > 0.0 {
@@ -268,7 +268,7 @@ pub fn DiGraph::is_cyclic[X](self : DiGraph[X]) -> Bool {
         if visited[current] == false {
           visited[current] = true
           visited_count = visited_count + 1
-          self.neighbors(current).iter(
+          self.neighbors(current).each(
             fn(neighbor) {
               if visited[neighbor] == false {
                 queue.push(neighbor)
@@ -294,7 +294,7 @@ pub fn DiGraph::is_strongly_connected[X](self : DiGraph[X]) -> Bool {
         if visited[current] == false {
           visited[current] = true
           visited_count = visited_count + 1
-          self.neighbors(current).iter(
+          self.neighbors(current).each(
             fn(neighbor) {
               if visited[neighbor] == false {
                 queue.push(neighbor)
@@ -349,7 +349,7 @@ pub fn DiGraph::is_connected[X](self : DiGraph[X]) -> Bool {
         if visited[current] == false {
           visited[current] = true
           visited_count = visited_count + 1
-          self.neighbors(current).iter(
+          self.neighbors(current).each(
             fn(neighbor) {
               if visited[neighbor] == false {
                 queue.push(neighbor)
@@ -374,7 +374,7 @@ pub fn DiGraph::is_bipartite[X](self : DiGraph[X]) -> Bool {
         if color[current] == -1 {
           color[current] = 0
           color_count = color_count - 1
-          self.neighbors(current).iter(
+          self.neighbors(current).each(
             fn(neighbor) {
               if color[neighbor] == -1 {
                 color[neighbor] = 1 - color[current]
@@ -403,7 +403,7 @@ pub fn DiGraph::is_tree[X](self : DiGraph[X]) -> Bool {
         if visited[current] == false {
           visited[current] = true
           visited_count = visited_count + 1
-          self.neighbors(current).iter(
+          self.neighbors(current).each(
             fn(neighbor) {
               if visited[neighbor] == false {
                 if self.has_edge(current, neighbor) == false {
@@ -432,7 +432,7 @@ pub fn DiGraph::is_dag[X](self : DiGraph[X]) -> Bool {
         if visited[current] == false {
           visited[current] = true
           visited_count = visited_count + 1
-          self.neighbors(current).iter(
+          self.neighbors(current).each(
             fn(neighbor) {
               if visited[neighbor] == false {
                 if self.has_edge(current, neighbor) == false {
@@ -609,7 +609,7 @@ pub fn DiGraph::dijkstra_path[X](
     let current = queue.pop()
     match current {
       Some(current) =>
-        self.neighbors(current).iter(
+        self.neighbors(current).each(
           fn(neighbor) {
             let alt = dist[current] + self.edges[current][neighbor]
             if alt < dist[neighbor] {
