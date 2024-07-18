@@ -631,7 +631,7 @@ pub fn DiGraph::dijkstra_path[X](
       path.push(current)
       current = prev[current]
     }
-    path.reverse()
-    Some(path)
+    
+    Some(path.rev())
   }
 }
