@@ -15,6 +15,6 @@ fn get_in_degree() -> Int {
 }
 
 test {
-  inspect(find_neighbors(), content="[1, 5]")!
-  inspect(get_in_degree(), content="1")!
+  inspect!(find_neighbors(), content="[1, 5]")
+  inspect!(get_in_degree(), content="1")
 }
