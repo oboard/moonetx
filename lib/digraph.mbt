@@ -2,7 +2,7 @@
 pub struct DiGraph[X] {
   mut nodes : Array[X]
   mut edges : Array[Array[Double]]
-} derive(Show, Debug, Eq)
+} derive(Show, Eq)
 
 /// Creates a new, empty graph.
 pub fn DiGraph::new[X]() -> DiGraph[X] {

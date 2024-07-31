@@ -2,7 +2,7 @@
 pub struct Graph[X] {
   mut nodes : Array[X]
   mut edges : Array[Array[Double]]
-} derive(Show, Debug, Eq)
+} derive(Show, Eq)
 
 pub fn Graph::new[X]() -> Graph[X] {
   { nodes: [], edges: [] }
@@ -459,7 +459,6 @@ pub fn Graph::dijkstra_path[X](
       path.push(current)
       current = prev[current]
     }
-    
     Some(path.rev())
   }
 }
