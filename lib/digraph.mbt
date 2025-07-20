@@ -1,31 +1,31 @@
-/// A `DiGraph` is a directed graph with nodes of type `X` and edges of type `Double`.
+///| A `DiGraph` is a directed graph with nodes of type `X` and edges of type `Double`.
 pub struct DiGraph[X] {
-  mut nodes : Array[X]
-  mut edges : Array[Array[Double]]
+  nodes : Array[X]
+  edges : Array[Array[Double]]
 } derive(Show, Eq)
 
-/// Creates a new, empty graph.
-pub fn DiGraph::new[X]() -> DiGraph[X] {
+///| Creates a new, empty graph.
+pub fn[X] DiGraph::new() -> DiGraph[X] {
   { nodes: [], edges: [] }
 }
 
-/// Adds a node to the graph.
-pub fn DiGraph::add_node[X](self : DiGraph[X], node : X) -> Unit {
+///| Adds a node to the graph.
+pub fn[X] DiGraph::add_node(self : DiGraph[X], node : X) -> Unit {
   self.nodes.push(node)
 }
 
-/// Adds a list of nodes to the graph.
-pub fn DiGraph::add_nodes_from[X](self : DiGraph[X], nodes : Array[X]) -> Unit {
+///| Adds a list of nodes to the graph.
+pub fn[X] DiGraph::add_nodes_from(self : DiGraph[X], nodes : Array[X]) -> Unit {
   nodes.each(fn(node) { self.add_node(node) })
 }
 
-/// Removes a node from the graph and returns it.
-pub fn DiGraph::remove_node[X](self : DiGraph[X], idx : Int) -> X {
+///| Removes a node from the graph and returns it.
+pub fn[X] DiGraph::remove_node(self : DiGraph[X], idx : Int) -> X {
   self.nodes.remove(idx)
 }
 
-/// Removes a list of nodes from the graph.
-pub fn DiGraph::remove_nodes_from[X](
+///| Removes a list of nodes from the graph.
+pub fn[X] DiGraph::remove_nodes_from(
   self : DiGraph[X],
   idxs : Array[Int]
 ) -> Array[X] {
@@ -34,12 +34,12 @@ pub fn DiGraph::remove_nodes_from[X](
   removed
 }
 
-/// Adds an edge to the graph.
-pub fn DiGraph::add_edge[X](
+///| Adds an edge to the graph.
+pub fn[X] DiGraph::add_edge(
   self : DiGraph[X],
   from : Int,
   to : Int,
-  ~weight : Double = 1.0
+  weight~ : Double = 1.0
 ) -> Unit {
   while self.edges.length() <= from {
     self.edges.push([])
@@ -50,33 +50,31 @@ pub fn DiGraph::add_edge[X](
   self.edges[from][to] = weight
 }
 
-/// Adds a list of edges to the graph.
-pub fn DiGraph::add_edges_from[X](
+///| Adds a list of edges to the graph.
+pub fn[X] DiGraph::add_edges_from(
   self : DiGraph[X],
   edges : Array[(Int, Int)],
-  ~weight : Double = 1.0
+  weight~ : Double = 1.0
 ) -> Unit {
-  edges.each(
-    fn(edge) {
-      let (from, to) = edge
-      while self.edges.length() <= from {
-        self.edges.push([])
-      }
-      if self.edges[from].length() <= to {
-        self.edges[from].resize(to + 1, 0.0)
-      }
-      self.edges[from][to] = weight
-    },
-  )
+  edges.each(fn(edge) {
+    let (from, to) = edge
+    while self.edges.length() <= from {
+      self.edges.push([])
+    }
+    if self.edges[from].length() <= to {
+      self.edges[from].resize(to + 1, 0.0)
+    }
+    self.edges[from][to] = weight
+  })
 }
 
-/// Removes the edge from `from` to `to` if it exists.
-pub fn DiGraph::remove_edge[X](self : DiGraph[X], from : Int, to : Int) -> Unit {
+///| Removes the edge from `from` to `to` if it exists.
+pub fn[X] DiGraph::remove_edge(self : DiGraph[X], from : Int, to : Int) -> Unit {
   self.edges[from][to] = 0.0
 }
 
-/// Returns true if the graph has an edge from `from` to `to`, false otherwise.
-pub fn DiGraph::has_edge[X](self : DiGraph[X], from : Int, to : Int) -> Bool {
+///| Returns true if the graph has an edge from `from` to `to`, false otherwise.
+pub fn[X] DiGraph::has_edge(self : DiGraph[X], from : Int, to : Int) -> Bool {
   if self.edges.length() <= from {
     false
   } else if self.edges[from].length() <= to {
@@ -86,18 +84,18 @@ pub fn DiGraph::has_edge[X](self : DiGraph[X], from : Int, to : Int) -> Bool {
   }
 }
 
-/// Returns a list of edges in the graph.
-pub fn DiGraph::get_edges[X](self : DiGraph[X]) -> Array[Array[Double]] {
+///| Returns a list of edges in the graph.
+pub fn[X] DiGraph::get_edges(self : DiGraph[X]) -> Array[Array[Double]] {
   self.edges
 }
 
-/// Returns a list of nodes in the graph.
-pub fn DiGraph::get_nodes[X](self : DiGraph[X]) -> Array[X] {
+///| Returns a list of nodes in the graph.
+pub fn[X] DiGraph::get_nodes(self : DiGraph[X]) -> Array[X] {
   self.nodes
 }
 
-/// Returns the number of nodes in the graph.
-pub fn op_get[X](self : DiGraph[X], idx : Int) -> X? {
+///| Returns the number of nodes in the graph.
+pub fn[X] DiGraph::op_get(self : DiGraph[X], idx : Int) -> X? {
   if idx < 0 || idx >= self.nodes.length() {
     None
   } else {
@@ -105,8 +103,8 @@ pub fn op_get[X](self : DiGraph[X], idx : Int) -> X? {
   }
 }
 
-/// Returns a list of neighbors of the given node.
-pub fn DiGraph::neighbors[X](self : DiGraph[X], idx : Int) -> Array[Int] {
+///| Returns a list of neighbors of the given node.
+pub fn[X] DiGraph::neighbors(self : DiGraph[X], idx : Int) -> Array[Int] {
   let neighbors = []
   for i = 0; i < self.edges.length(); i = i + 1 {
     if self.edges[i].length() > idx {
@@ -118,8 +116,8 @@ pub fn DiGraph::neighbors[X](self : DiGraph[X], idx : Int) -> Array[Int] {
   neighbors
 }
 
-/// Returns a list of edges from the given node to other nodes.
-pub fn DiGraph::edges_from[X](
+///| Returns a list of edges from the given node to other nodes.
+pub fn[X] DiGraph::edges_from(
   self : DiGraph[X],
   idx : Int
 ) -> Array[(Int, Double)] {
@@ -134,8 +132,8 @@ pub fn DiGraph::edges_from[X](
   edges
 }
 
-/// Returns a list of edges from the given node to other nodes.
-pub fn DiGraph::edges_to[X](
+///| Returns a list of edges from the given node to other nodes.
+pub fn[X] DiGraph::edges_to(
   self : DiGraph[X],
   idx : Int
 ) -> Array[(Int, Double)] {
@@ -150,8 +148,8 @@ pub fn DiGraph::edges_to[X](
   edges
 }
 
-/// Returns the degree of the given node.
-pub fn DiGraph::degree[X](self : DiGraph[X], idx : Int) -> Int {
+///| Returns the degree of the given node.
+pub fn[X] DiGraph::degree(self : DiGraph[X], idx : Int) -> Int {
   let mut degree = 0
   for i = 0; i < self.edges.length(); i = i + 1 {
     if self.edges[i].length() > idx {
@@ -168,30 +166,28 @@ pub fn DiGraph::degree[X](self : DiGraph[X], idx : Int) -> Int {
   degree
 }
 
-/// Returns the in-degree of the given node.
-pub fn DiGraph::in_degree[X](self : DiGraph[X], idx : Int) -> Int {
+///| Returns the in-degree of the given node.
+pub fn[X] DiGraph::in_degree(self : DiGraph[X], idx : Int) -> Int {
   let mut degree = 0
   self.edges[idx].each(fn(weight) { if weight > 0.0 { degree = degree + 1 } })
   degree
 }
 
-/// Returns the out-degree of the given node.
-pub fn DiGraph::out_degree[X](self : DiGraph[X], idx : Int) -> Int {
+///| Returns the out-degree of the given node.
+pub fn[X] DiGraph::out_degree(self : DiGraph[X], idx : Int) -> Int {
   let mut degree = 0
-  self.edges.each(
-    fn(row) {
-      if row.length() > idx {
-        if row[idx] > 0.0 {
-          degree = degree + 1
-        }
+  self.edges.each(fn(row) {
+    if row.length() > idx {
+      if row[idx] > 0.0 {
+        degree = degree + 1
       }
-    },
-  )
+    }
+  })
   degree
 }
 
-/// Returns a list of degrees of all nodes in the graph.
-pub fn DiGraph::degrees[X](self : DiGraph[X]) -> Array[Int] {
+///| Returns a list of degrees of all nodes in the graph.
+pub fn[X] DiGraph::degrees(self : DiGraph[X]) -> Array[Int] {
   let degrees = []
   for i = 0; i < self.nodes.length(); i = i + 1 {
     degrees.push(self.degree(i))
@@ -199,8 +195,8 @@ pub fn DiGraph::degrees[X](self : DiGraph[X]) -> Array[Int] {
   degrees
 }
 
-/// Returns a list of predecessors of the given node.
-pub fn DiGraph::predecessors[X](self : DiGraph[X], idx : Int) -> Array[Int] {
+///| Returns a list of predecessors of the given node.
+pub fn[X] DiGraph::predecessors(self : DiGraph[X], idx : Int) -> Array[Int] {
   let predecessors = []
   for i = 0; i < self.edges.length(); i = i + 1 {
     if self.edges[i].length() > idx {
@@ -212,8 +208,8 @@ pub fn DiGraph::predecessors[X](self : DiGraph[X], idx : Int) -> Array[Int] {
   predecessors
 }
 
-/// Returns a list of successors of the given node.
-pub fn DiGraph::successors[X](self : DiGraph[X], idx : Int) -> Array[Int] {
+///| Returns a list of successors of the given node.
+pub fn[X] DiGraph::successors(self : DiGraph[X], idx : Int) -> Array[Int] {
   let successors = []
   for i = 0; i < self.edges.length(); i = i + 1 {
     if self.edges[idx].length() > i {
@@ -225,8 +221,8 @@ pub fn DiGraph::successors[X](self : DiGraph[X], idx : Int) -> Array[Int] {
   successors
 }
 
-/// Returns true if the graph is weighted, false otherwise.
-pub fn DiGraph::is_weighted[X](self : DiGraph[X]) -> Bool {
+///| Returns true if the graph is weighted, false otherwise.
+pub fn[X] DiGraph::is_weighted(self : DiGraph[X]) -> Bool {
   for i = 0; i < self.edges.length(); i = i + 1 {
     for j = 0; j < self.edges[i].length(); j = j + 1 {
       if self.edges[i][j] != 1.0 {
@@ -237,8 +233,8 @@ pub fn DiGraph::is_weighted[X](self : DiGraph[X]) -> Bool {
   false
 }
 
-/// Returns true if the graph is a tree, false otherwise.
-pub fn DiGraph::is_complete[X](self : DiGraph[X]) -> Bool {
+///| Returns true if the graph is a tree, false otherwise.
+pub fn[X] DiGraph::is_complete(self : DiGraph[X]) -> Bool {
   for i = 0; i < self.edges.length(); i = i + 1 {
     for j = 0; j < self.edges[i].length(); j = j + 1 {
       if self.edges[i][j] != 1.0 {
@@ -256,8 +252,8 @@ pub fn DiGraph::is_complete[X](self : DiGraph[X]) -> Bool {
   true
 }
 
-/// Returns true if the graph is acyclic, false otherwise.
-pub fn DiGraph::is_cyclic[X](self : DiGraph[X]) -> Bool {
+///| Returns true if the graph is acyclic, false otherwise.
+pub fn[X] DiGraph::is_cyclic(self : DiGraph[X]) -> Bool {
   let visited = Array::make(self.nodes.length(), false)
   let queue = [0]
   let mut visited_count = 0
@@ -268,13 +264,13 @@ pub fn DiGraph::is_cyclic[X](self : DiGraph[X]) -> Bool {
         if visited[current] == false {
           visited[current] = true
           visited_count = visited_count + 1
-          self.neighbors(current).each(
-            fn(neighbor) {
-              if visited[neighbor] == false {
-                queue.push(neighbor)
-              }
-            },
-          )
+          self
+          .neighbors(current)
+          .each(fn(neighbor) {
+            if visited[neighbor] == false {
+              queue.push(neighbor)
+            }
+          })
         }
       None => continue
     }
@@ -282,8 +278,8 @@ pub fn DiGraph::is_cyclic[X](self : DiGraph[X]) -> Bool {
   visited_count != self.nodes.length()
 }
 
-/// Returns true if the graph is strongly connected, false otherwise.
-pub fn DiGraph::is_strongly_connected[X](self : DiGraph[X]) -> Bool {
+///| Returns true if the graph is strongly connected, false otherwise.
+pub fn[X] DiGraph::is_strongly_connected(self : DiGraph[X]) -> Bool {
   let visited = Array::make(self.nodes.length(), false)
   let queue = [0]
   let mut visited_count = 0
@@ -294,13 +290,13 @@ pub fn DiGraph::is_strongly_connected[X](self : DiGraph[X]) -> Bool {
         if visited[current] == false {
           visited[current] = true
           visited_count = visited_count + 1
-          self.neighbors(current).each(
-            fn(neighbor) {
-              if visited[neighbor] == false {
-                queue.push(neighbor)
-              }
-            },
-          )
+          self
+          .neighbors(current)
+          .each(fn(neighbor) {
+            if visited[neighbor] == false {
+              queue.push(neighbor)
+            }
+          })
         }
       None => continue
     }
@@ -308,8 +304,8 @@ pub fn DiGraph::is_strongly_connected[X](self : DiGraph[X]) -> Bool {
   visited_count == self.nodes.length()
 }
 
-/// Returns true if the graph is eulerian, false otherwise.
-pub fn DiGraph::is_eulerian[X](self : DiGraph[X]) -> Bool {
+///| Returns true if the graph is eulerian, false otherwise.
+pub fn[X] DiGraph::is_eulerian(self : DiGraph[X]) -> Bool {
   let mut odd_degree_count = 0
   for i = 0; i < self.nodes.length(); i = i + 1 {
     if self.degree(i) % 2 == 1 {
@@ -338,7 +334,8 @@ pub fn DiGraph::is_eulerian[X](self : DiGraph[X]) -> Bool {
   }
 }
 
-pub fn DiGraph::is_connected[X](self : DiGraph[X]) -> Bool {
+///|
+pub fn[X] DiGraph::is_connected(self : DiGraph[X]) -> Bool {
   let visited = Array::make(self.nodes.length(), false)
   let queue = [0]
   let mut visited_count = 0
@@ -349,13 +346,13 @@ pub fn DiGraph::is_connected[X](self : DiGraph[X]) -> Bool {
         if visited[current] == false {
           visited[current] = true
           visited_count = visited_count + 1
-          self.neighbors(current).each(
-            fn(neighbor) {
-              if visited[neighbor] == false {
-                queue.push(neighbor)
-              }
-            },
-          )
+          self
+          .neighbors(current)
+          .each(fn(neighbor) {
+            if visited[neighbor] == false {
+              queue.push(neighbor)
+            }
+          })
         }
       None => continue
     }
@@ -363,7 +360,8 @@ pub fn DiGraph::is_connected[X](self : DiGraph[X]) -> Bool {
   visited_count == self.nodes.length()
 }
 
-pub fn DiGraph::is_bipartite[X](self : DiGraph[X]) -> Bool {
+///|
+pub fn[X] DiGraph::is_bipartite(self : DiGraph[X]) -> Bool {
   let color = Array::make(self.nodes.length(), -1)
   let queue = [0]
   let mut color_count = 2
@@ -374,17 +372,17 @@ pub fn DiGraph::is_bipartite[X](self : DiGraph[X]) -> Bool {
         if color[current] == -1 {
           color[current] = 0
           color_count = color_count - 1
-          self.neighbors(current).each(
-            fn(neighbor) {
-              if color[neighbor] == -1 {
-                color[neighbor] = 1 - color[current]
-                queue.push(neighbor)
-              } else if color[neighbor] == color[current] {
-                color_count = 1
-                return
-              }
-            },
-          )
+          self
+          .neighbors(current)
+          .each(fn(neighbor) {
+            if color[neighbor] == -1 {
+              color[neighbor] = 1 - color[current]
+              queue.push(neighbor)
+            } else if color[neighbor] == color[current] {
+              color_count = 1
+              return
+            }
+          })
         }
       None => continue
     }
@@ -392,7 +390,8 @@ pub fn DiGraph::is_bipartite[X](self : DiGraph[X]) -> Bool {
   color_count == 0
 }
 
-pub fn DiGraph::is_tree[X](self : DiGraph[X]) -> Bool {
+///|
+pub fn[X] DiGraph::is_tree(self : DiGraph[X]) -> Bool {
   let visited = Array::make(self.nodes.length(), false)
   let queue = [0]
   let mut visited_count = 0
@@ -403,17 +402,17 @@ pub fn DiGraph::is_tree[X](self : DiGraph[X]) -> Bool {
         if visited[current] == false {
           visited[current] = true
           visited_count = visited_count + 1
-          self.neighbors(current).each(
-            fn(neighbor) {
-              if visited[neighbor] == false {
-                if self.has_edge(current, neighbor) == false {
-                  visited_count = 1
-                  return
-                }
-                queue.push(neighbor)
+          self
+          .neighbors(current)
+          .each(fn(neighbor) {
+            if visited[neighbor] == false {
+              if self.has_edge(current, neighbor) == false {
+                visited_count = 1
+                return
               }
-            },
-          )
+              queue.push(neighbor)
+            }
+          })
         }
       None => continue
     }
@@ -421,7 +420,8 @@ pub fn DiGraph::is_tree[X](self : DiGraph[X]) -> Bool {
   visited_count == self.nodes.length()
 }
 
-pub fn DiGraph::is_dag[X](self : DiGraph[X]) -> Bool {
+///|
+pub fn[X] DiGraph::is_dag(self : DiGraph[X]) -> Bool {
   let visited = Array::make(self.nodes.length(), false)
   let queue = [0]
   let mut visited_count = 0
@@ -432,17 +432,17 @@ pub fn DiGraph::is_dag[X](self : DiGraph[X]) -> Bool {
         if visited[current] == false {
           visited[current] = true
           visited_count = visited_count + 1
-          self.neighbors(current).each(
-            fn(neighbor) {
-              if visited[neighbor] == false {
-                if self.has_edge(current, neighbor) == false {
-                  visited_count = 1
-                  return
-                }
-                queue.push(neighbor)
+          self
+          .neighbors(current)
+          .each(fn(neighbor) {
+            if visited[neighbor] == false {
+              if self.has_edge(current, neighbor) == false {
+                visited_count = 1
+                return
               }
-            },
-          )
+              queue.push(neighbor)
+            }
+          })
         }
       None => continue
     }
@@ -450,7 +450,8 @@ pub fn DiGraph::is_dag[X](self : DiGraph[X]) -> Bool {
   visited_count == self.nodes.length()
 }
 
-pub fn DiGraph::transitive_closure[X](self : DiGraph[X]) -> DiGraph[X] {
+///|
+pub fn[X] DiGraph::transitive_closure(self : DiGraph[X]) -> DiGraph[X] {
   let closure = DiGraph::new()
   closure.add_nodes_from(self.nodes)
   for i = 0; i < self.nodes.length(); i = i + 1 {
@@ -472,7 +473,8 @@ pub fn DiGraph::transitive_closure[X](self : DiGraph[X]) -> DiGraph[X] {
   closure
 }
 
-pub fn DiGraph::reverse[X](self : DiGraph[X]) -> DiGraph[X] {
+///|
+pub fn[X] DiGraph::reverse(self : DiGraph[X]) -> DiGraph[X] {
   let reversed = DiGraph::new()
   reversed.add_nodes_from(self.nodes)
   for i = 0; i < self.nodes.length(); i = i + 1 {
@@ -485,7 +487,8 @@ pub fn DiGraph::reverse[X](self : DiGraph[X]) -> DiGraph[X] {
   reversed
 }
 
-pub fn DiGraph::subDiGraph[X](
+///|
+pub fn[X] DiGraph::subDiGraph(
   self : DiGraph[X],
   idxs : Array[Int]
 ) -> DiGraph[X] {
@@ -501,7 +504,8 @@ pub fn DiGraph::subDiGraph[X](
   sub
 }
 
-pub fn DiGraph::union[X](self : DiGraph[X], other : DiGraph[X]) -> DiGraph[X] {
+///|
+pub fn[X] DiGraph::union(self : DiGraph[X], other : DiGraph[X]) -> DiGraph[X] {
   let union = DiGraph::new()
   union.add_nodes_from(self.nodes)
   union.add_nodes_from(other.nodes)
@@ -515,7 +519,8 @@ pub fn DiGraph::union[X](self : DiGraph[X], other : DiGraph[X]) -> DiGraph[X] {
   union
 }
 
-pub fn DiGraph::intersection[X](
+///|
+pub fn[X] DiGraph::intersection(
   self : DiGraph[X],
   other : DiGraph[X]
 ) -> DiGraph[X] {
@@ -532,7 +537,8 @@ pub fn DiGraph::intersection[X](
   intersection
 }
 
-pub fn DiGraph::difference[X](
+///|
+pub fn[X] DiGraph::difference(
   self : DiGraph[X],
   other : DiGraph[X]
 ) -> DiGraph[X] {
@@ -548,7 +554,8 @@ pub fn DiGraph::difference[X](
   difference
 }
 
-pub fn DiGraph::symmetric_difference[X](
+///|
+pub fn[X] DiGraph::symmetric_difference(
   self : DiGraph[X],
   other : DiGraph[X]
 ) -> DiGraph[X] {
@@ -567,7 +574,8 @@ pub fn DiGraph::symmetric_difference[X](
   symmetric_difference
 }
 
-pub fn DiGraph::complement[X](self : DiGraph[X]) -> DiGraph[X] {
+///|
+pub fn[X] DiGraph::complement(self : DiGraph[X]) -> DiGraph[X] {
   let complement = DiGraph::new()
   complement.add_nodes_from(self.nodes)
   for i = 0; i < self.nodes.length(); i = i + 1 {
@@ -580,7 +588,8 @@ pub fn DiGraph::complement[X](self : DiGraph[X]) -> DiGraph[X] {
   complement
 }
 
-pub fn DiGraph::to_dot[X](self : DiGraph[X]) -> String {
+///|
+pub fn[X] DiGraph::to_dot(self : DiGraph[X]) -> String {
   let mut dot = "diDiGraph G {\n"
   for i = 0; i < self.nodes.length(); i = i + 1 {
     dot = dot + "  " + i.to_string() + ";\n"
@@ -596,42 +605,69 @@ pub fn DiGraph::to_dot[X](self : DiGraph[X]) -> String {
   dot
 }
 
-pub fn DiGraph::dijkstra_path[X](
+///| single_source_dijkstra 返回从 source 到所有其他节点的最短路径，使用 Dijkstra 算法。
+pub fn[X] DiGraph::single_source_dijkstra(
   self : DiGraph[X],
-  start : Int,
-  end : Int
-) -> Array[Int]? {
-  let dist = Array::make(self.nodes.length(), @double.inf(1))
-  let prev = Array::make(self.nodes.length(), 0)
-  dist[start] = 0.0
-  let queue = [start]
-  while queue.length() > 0 {
-    let current = queue.pop()
-    match current {
-      Some(current) =>
-        self.neighbors(current).each(
-          fn(neighbor) {
-            let alt = dist[current] + self.edges[current][neighbor]
-            if alt < dist[neighbor] {
-              dist[neighbor] = alt
-              prev[neighbor] = current
-              queue.push(neighbor)
-            }
-          },
-        )
-      None => continue
+  source~ : Int
+) -> (Array[Double], Array[Array[Int]]) {
+  // dist, paths
+  // 检查起点和终点是否合法
+  if source < 0 || source >= self.nodes.length() {
+    return (
+      Array::make(self.nodes.length(), @double.infinity),
+      Array::make(self.nodes.length(), []),
+    )
+  }
+  let dist = Array::make(self.nodes.length(), @double.infinity)
+  let visited = Array::make(self.nodes.length(), false)
+  let parent = Array::make(self.nodes.length(), -1)
+  dist[source] = 0.0
+  for i in 0..<self.nodes.length() {
+    fn min_distance(dist : Array[Double], visited : Array[Bool]) -> Int {
+      let mut min_dist = @double.infinity
+      let mut min_index = -1
+      for j in 0..<dist.length() {
+        if visited[j] == false && dist[j] <= min_dist {
+          min_dist = dist[j]
+          min_index = j
+        }
+      }
+      min_index
+    }
+
+    let u = min_distance(dist, visited)
+    if u == -1 {
+      break
+    }
+    visited[u] = true
+    for v in 0..<self.nodes.length() {
+      if self.has_edge(u, v) &&
+        visited[v] == false &&
+        dist[u] != @double.infinity &&
+        dist[u] + self.edges[u][v] < dist[v] {
+        dist[v] = dist[u] + self.edges[u][v]
+        parent[v] = u
+      }
     }
   }
-  if @double.is_pos_inf(dist[end]) {
-    None
-  } else {
-    let path = [end]
-    let mut current = end
-    while prev[current] != 0 {
-      path.push(current)
-      current = prev[current]
+  // 构建每个节点的最短路径
+  let paths = Array::make(self.nodes.length(), [])
+  for i in 0..<self.nodes.length() {
+    let path = []
+    let mut current = i
+    if dist[i] == @double.infinity {
+      // 不可达，留空
+      paths[i] = []
+      continue
     }
-    
-    Some(path.rev())
+    while current != -1 {
+      path.insert(0, current)
+      if current == source {
+        break
+      }
+      current = parent[current]
+    }
+    paths[i] = path
   }
+  (dist, paths)
 }
