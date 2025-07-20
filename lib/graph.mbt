@@ -46,10 +46,10 @@ pub fn[X] Graph::add_edge(
     self.edges.push([])
   }
   if self.edges[from].length() <= max {
-    self.edges[from].resize(max + 1, 0.0)
+    self.edges[from].resize(max + 1, @double.infinity)
   }
   if self.edges[to].length() <= max {
-    self.edges[to].resize(max + 1, 0.0)
+    self.edges[to].resize(max + 1, @double.infinity)
   }
   self.edges[from][to] = weight
   self.edges[to][from] = weight
@@ -90,7 +90,7 @@ pub fn[X] Graph::has_edge(self : Graph[X], from : Int, to : Int) -> Bool {
   } else if self.edges[from].length() <= to {
     false
   } else {
-    self.edges[from][to] > 0.0
+    self.edges[from][to] < @double.infinity
   }
 }
 
@@ -110,7 +110,7 @@ pub fn[X] Graph::get_nodes(self : Graph[X]) -> Array[X] {
 }
 
 ///| returns the node at the given index, or None if the index is out of bounds.
-pub fn[X] Graph::op_get(self : Graph[X], idx : Int) -> X? {
+pub fn[X] op_get(self : Graph[X], idx : Int) -> X? {
   if idx < 0 || idx >= self.nodes.length() {
     None
   } else {
@@ -123,7 +123,7 @@ pub fn[X] Graph::neighbors(self : Graph[X], idx : Int) -> Array[Int] {
   let neighbors = []
   for i = 0; i < self.edges.length(); i = i + 1 {
     if self.edges[i].length() > idx {
-      if self.edges[i][idx] > 0.0 {
+      if self.edges[i][idx] < @double.infinity {
         neighbors.push(i)
       }
     }
@@ -136,7 +136,7 @@ pub fn[X] Graph::edges_from(self : Graph[X], idx : Int) -> Array[(Int, Double)] 
   let edges = []
   for i = 0; i < self.edges.length(); i = i + 1 {
     if self.edges[i].length() > idx {
-      if self.edges[i][idx] > 0.0 {
+      if self.edges[i][idx] < @double.infinity {
         edges.push((i, self.edges[i][idx]))
       }
     }
@@ -149,7 +149,7 @@ pub fn[X] Graph::edges_to(self : Graph[X], idx : Int) -> Array[(Int, Double)] {
   let edges = []
   for i = 0; i < self.edges.length(); i = i + 1 {
     if self.edges[idx].length() > i {
-      if self.edges[idx][i] > 0.0 {
+      if self.edges[idx][i] < @double.infinity {
         edges.push((i, self.edges[idx][i]))
       }
     }
@@ -162,7 +162,7 @@ pub fn[X] Graph::degree(self : Graph[X], idx : Int) -> Int {
   let mut degree = 0
   for i = 0; i < self.edges.length(); i = i + 1 {
     if self.edges[i].length() > idx {
-      if self.edges[i][idx] > 0.0 {
+      if self.edges[i][idx] < @double.infinity {
         degree = degree + 1
       }
     }
@@ -452,40 +452,39 @@ pub fn[X] Graph::single_source_dijkstra(
       Array::make(self.nodes.length(), []),
     )
   }
-  let dist = Array::make(self.nodes.length(), @double.infinity)
+  // 构建每个节点的最短路径
+  let paths = Array::make(self.nodes.length(), [])
+  // 记录每个节点到起点的距离
+  let dist = self.edges[source].copy()
+  // 记录每个节点是否被访问过
   let visited = Array::make(self.nodes.length(), false)
+  // 记录每个节点的父节点
   let parent = Array::make(self.nodes.length(), -1)
   dist[source] = 0.0
   for i in 0..<self.nodes.length() {
-    fn min_distance(dist : Array[Double], visited : Array[Bool]) -> Int {
-      let mut min_dist = @double.infinity
-      let mut min_index = -1
-      for j in 0..<dist.length() {
-        if visited[j] == false && dist[j] <= min_dist {
-          min_dist = dist[j]
-          min_index = j
-        }
-      }
-      min_index
-    }
 
-    let u = min_distance(dist, visited)
-    if u == -1 {
-      break
+    // 找到当前距离起点最近的节点
+    let mut min_dist = @double.infinity
+    let mut u = source
+    for j in 0..<dist.length() {
+      if visited[j] == false && dist[j] <= min_dist {
+        min_dist = dist[j]
+        u = j
+      }
     }
+    // 标记为已访问
     visited[u] = true
+    // 更新所有邻居节点的距离
     for v in 0..<self.nodes.length() {
       if self.has_edge(u, v) &&
         visited[v] == false &&
-        dist[u] != @double.infinity &&
-        dist[u] + self.edges[u][v] < dist[v] {
-        dist[v] = dist[u] + self.edges[u][v]
+        min_dist != @double.infinity &&
+        min_dist + self.edges[u][v] < dist[v] {
+        dist[v] = min_dist + self.edges[u][v]
         parent[v] = u
       }
     }
   }
-  // 构建每个节点的最短路径
-  let paths = Array::make(self.nodes.length(), [])
   for i in 0..<self.nodes.length() {
     let path = []
     let mut current = i
@@ -515,11 +514,11 @@ test "single_source_dijkstra" {
   graph.add_edge(1, 2, weight=2.0)
   graph.add_edge(1, 3, weight=1.0)
   graph.add_edge(2, 3, weight=1.0)
-  let (dist, paths) = graph.single_source_dijkstra(source=0)
+  let (dist, paths) = graph.single_source_dijkstra(source=1)
   inspect(
     graph.to_string(),
     content="{nodes: [0, 1, 2, 3], edges: [[0, 1, 4, 0], [1, 0, 2, 1], [4, 2, 0, 1], [0, 1, 1, 0]]}",
   )
-  inspect(dist, content="[0, 1, 3, 2]")
-  inspect(paths, content="[[0], [0, 1], [0, 1, 2], [0, 1, 3]]")
+  inspect(dist, content="[1, 0, 2, 1]")
+  inspect(paths, content="[[1, 0], [1], [1, 2], [1, 3]]")
 }
