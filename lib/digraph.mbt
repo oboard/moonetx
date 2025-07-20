@@ -614,48 +614,51 @@ pub fn[X] DiGraph::single_source_dijkstra(
   self : DiGraph[X],
   source~ : Int
 ) -> (Array[Double], Array[Array[Int]]) {
-  // dist, paths
-  // 检查起点和终点是否合法
+  // 检查起点是否合法
   if source < 0 || source >= self.nodes.length() {
     return (
       Array::make(self.nodes.length(), @double.infinity),
       Array::make(self.nodes.length(), []),
     )
   }
-  // 构建每个节点的最短路径
-  let paths = Array::make(self.nodes.length(), [])
-  // 记录每个节点到起点的距离
-  let dist = self.edges[source].copy()
-  // 记录每个节点是否被访问过
-  let visited = Array::make(self.nodes.length(), false)
-  // 记录每个节点的父节点
-  let parent = Array::make(self.nodes.length(), -1)
+  let n = self.nodes.length()
+  // 初始化距离数组，所有节点距离为无穷大
+  let dist = Array::make(n, @double.infinity)
+  // 初始化路径数组
+  let paths = Array::make(n, [])
+  // 初始化已访问数组
+  let visited = Array::make(n, false)
+  // 初始化父节点数组
+  let parent = Array::make(n, -1)
   dist[source] = 0.0
-  for i in 0..<self.nodes.length() {
-
-    // 找到当前距离起点最近的节点
+  for _ in 0..<n {
+    // 找到未访问且距离最小的节点u
     let mut min_dist = @double.infinity
-    let mut u = source
-    for j in 0..<dist.length() {
-      if visited[j] == false && dist[j] <= min_dist {
+    let mut u = -1
+    for j in 0..<n {
+      if !visited[j] && dist[j] < min_dist {
         min_dist = dist[j]
         u = j
       }
     }
-    // 标记为已访问
+    // 如果没有可访问的节点，提前结束
+    if u == -1 {
+      break
+    }
     visited[u] = true
     // 更新所有邻居节点的距离
-    for v in 0..<self.nodes.length() {
-      if self.has_edge(u, v) &&
-        visited[v] == false &&
-        min_dist != @double.infinity &&
-        min_dist + self.edges[u][v] < dist[v] {
-        dist[v] = min_dist + self.edges[u][v]
-        parent[v] = u
+    for v in 0..<n {
+      if self.has_edge(u, v) && !visited[v] {
+        let weight = self.edges[u][v]
+        if dist[u] + weight < dist[v] {
+          dist[v] = dist[u] + weight
+          parent[v] = u
+        }
       }
     }
   }
-  for i in 0..<self.nodes.length() {
+  // 构建每个节点的最短路径
+  for i in 0..<n {
     let path = []
     let mut current = i
     if dist[i] == @double.infinity {
@@ -673,4 +676,22 @@ pub fn[X] DiGraph::single_source_dijkstra(
     paths[i] = path
   }
   (dist, paths)
+}
+
+///|
+test "single_source_dijkstra" {
+  let graph : DiGraph[Int] = DiGraph::new()
+  graph.add_nodes_from([0, 1, 2, 3])
+  graph.add_edge(0, 1, weight=1.0)
+  graph.add_edge(0, 2, weight=4.0)
+  graph.add_edge(1, 2, weight=2.0)
+  graph.add_edge(1, 3, weight=1.0)
+  graph.add_edge(2, 3, weight=1.0)
+  let (dist, paths) = graph.single_source_dijkstra(source=0)
+  inspect(
+    graph.to_string(),
+    content="{nodes: [0, 1, 2, 3], edges: [[Infinity, 1, 4], [Infinity, Infinity, 2, 1], [Infinity, Infinity, Infinity, 1]]}",
+  )
+  inspect(dist, content="[0, 1, 3, 2]")
+  inspect(paths, content="[[0], [0, 1], [0, 1, 2], [0, 1, 3]]")
 }
