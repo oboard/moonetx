@@ -80,7 +80,7 @@ pub fn[X] Graph::add_weighted_edges_from(
 
 ///| remove_edge removes the edge from the node with the given index to the node with the given index.
 pub fn[X] Graph::remove_edge(self : Graph[X], from : Int, to : Int) -> Unit {
-  self.edges[from][to] = 0.0
+  self.edges[from][to] = @double.infinity
 }
 
 ///| has_edge returns true if there is an edge from the node with the given index
@@ -462,7 +462,6 @@ pub fn[X] Graph::single_source_dijkstra(
   let parent = Array::make(self.nodes.length(), -1)
   dist[source] = 0.0
   for i in 0..<self.nodes.length() {
-
     // 找到当前距离起点最近的节点
     let mut min_dist = @double.infinity
     let mut u = source
