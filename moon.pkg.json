@@ -1,8 +1,0 @@
-{
-  "import": [
-    {
-      "path": "oboard/moonetx/lib",
-      "alias": "nx"
-    } 
-  ]
-}

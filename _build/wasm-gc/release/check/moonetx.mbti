@@ -1,0 +1,99 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "oboard/moonetx"
+
+// Values
+
+// Errors
+
+// Types and methods
+pub struct DiGraph[X] {
+  nodes : Array[X]
+  edges : Array[Array[Double]]
+}
+pub fn[X] DiGraph::add_edge(Self[X], Int, Int, weight? : Double) -> Unit
+pub fn[X] DiGraph::add_edges_from(Self[X], Array[(Int, Int)], weight? : Double) -> Unit
+pub fn[X] DiGraph::add_node(Self[X], X) -> Unit
+pub fn[X] DiGraph::add_nodes_from(Self[X], Array[X]) -> Unit
+pub fn[X] DiGraph::complement(Self[X]) -> Self[X]
+pub fn[X] DiGraph::degree(Self[X], Int) -> Int
+pub fn[X] DiGraph::degrees(Self[X]) -> Array[Int]
+pub fn[X] DiGraph::difference(Self[X], Self[X]) -> Self[X]
+pub fn[X] DiGraph::edges_from(Self[X], Int) -> Array[(Int, Double)]
+pub fn[X] DiGraph::edges_to(Self[X], Int) -> Array[(Int, Double)]
+pub fn[X] DiGraph::get_edges(Self[X]) -> Array[Array[Double]]
+pub fn[X] DiGraph::get_nodes(Self[X]) -> Array[X]
+pub fn[X] DiGraph::has_edge(Self[X], Int, Int) -> Bool
+pub fn[X] DiGraph::in_degree(Self[X], Int) -> Int
+pub fn[X] DiGraph::intersection(Self[X], Self[X]) -> Self[X]
+pub fn[X] DiGraph::is_bipartite(Self[X]) -> Bool
+pub fn[X] DiGraph::is_complete(Self[X]) -> Bool
+pub fn[X] DiGraph::is_connected(Self[X]) -> Bool
+pub fn[X] DiGraph::is_cyclic(Self[X]) -> Bool
+pub fn[X] DiGraph::is_dag(Self[X]) -> Bool
+pub fn[X] DiGraph::is_eulerian(Self[X]) -> Bool
+pub fn[X] DiGraph::is_strongly_connected(Self[X]) -> Bool
+pub fn[X] DiGraph::is_tree(Self[X]) -> Bool
+pub fn[X] DiGraph::is_weighted(Self[X]) -> Bool
+pub fn[X] DiGraph::neighbors(Self[X], Int) -> Array[Int]
+pub fn[X] DiGraph::new() -> Self[X]
+pub fn[X] DiGraph::op_get(Self[X], Int) -> X?
+pub fn[X] DiGraph::out_degree(Self[X], Int) -> Int
+pub fn[X] DiGraph::predecessors(Self[X], Int) -> Array[Int]
+pub fn[X] DiGraph::remove_edge(Self[X], Int, Int) -> Unit
+pub fn[X] DiGraph::remove_node(Self[X], Int) -> X
+pub fn[X] DiGraph::remove_nodes_from(Self[X], Array[Int]) -> Array[X]
+pub fn[X] DiGraph::reverse(Self[X]) -> Self[X]
+pub fn[X] DiGraph::single_source_dijkstra(Self[X], source~ : Int) -> (Array[Double], Array[Array[Int]])
+pub fn[X] DiGraph::subDiGraph(Self[X], Array[Int]) -> Self[X]
+pub fn[X] DiGraph::successors(Self[X], Int) -> Array[Int]
+pub fn[X] DiGraph::symmetric_difference(Self[X], Self[X]) -> Self[X]
+pub fn[X] DiGraph::to_dot(Self[X]) -> String
+pub fn[X] DiGraph::transitive_closure(Self[X]) -> Self[X]
+pub fn[X] DiGraph::union(Self[X], Self[X]) -> Self[X]
+pub impl[X : Eq] Eq for DiGraph[X]
+pub impl[X : Show] Show for DiGraph[X]
+
+pub struct Graph[X] {
+  nodes : Array[X]
+  edges : Array[Array[Double]]
+}
+pub fn[X] Graph::add_edge(Self[X], Int, Int, weight? : Double) -> Unit
+pub fn[X] Graph::add_edges_from(Self[X], Array[(Int, Int)], weight? : Double) -> Unit
+pub fn[X] Graph::add_node(Self[X], X) -> Unit
+pub fn[X] Graph::add_nodes_from(Self[X], Array[X]) -> Unit
+pub fn[X] Graph::add_weighted_edges_from(Self[X], Array[(Int, Int, Double)]) -> Unit
+pub fn[X] Graph::complement(Self[X]) -> Self[X]
+pub fn[X] Graph::degree(Self[X], Int) -> Int
+pub fn[X] Graph::degrees(Self[X]) -> Array[Int]
+pub fn[X] Graph::difference(Self[X], Self[X]) -> Self[X]
+pub fn[X] Graph::edges_from(Self[X], Int) -> Array[(Int, Double)]
+pub fn[X] Graph::edges_to(Self[X], Int) -> Array[(Int, Double)]
+pub fn[X] Graph::get_edges(Self[X]) -> Array[Array[Double]]
+pub fn[X] Graph::get_nodes(Self[X]) -> Array[X]
+pub fn[X] Graph::has_edge(Self[X], Int, Int) -> Bool
+pub fn[X : Eq] Graph::has_node(Self[X], X) -> Bool
+pub fn[X] Graph::intersection(Self[X], Self[X]) -> Self[X]
+pub fn[X] Graph::is_bipartite(Self[X]) -> Bool
+pub fn[X] Graph::is_connected(Self[X]) -> Bool
+pub fn[X] Graph::is_dag(Self[X]) -> Bool
+pub fn[X] Graph::is_tree(Self[X]) -> Bool
+pub fn[X] Graph::neighbors(Self[X], Int) -> Array[Int]
+pub fn[X] Graph::new() -> Self[X]
+pub fn[X] Graph::op_get(Self[X], Int) -> X?
+pub fn[X] Graph::remove_edge(Self[X], Int, Int) -> Unit
+pub fn[X] Graph::remove_node(Self[X], Int) -> X
+pub fn[X] Graph::remove_nodes_from(Self[X], Array[Int]) -> Array[X]
+pub fn[X] Graph::reverse(Self[X]) -> Self[X]
+pub fn[X] Graph::single_source_dijkstra(Self[X], source~ : Int) -> (Array[Double], Array[Array[Int]])
+pub fn[X] Graph::subgraph(Self[X], Array[Int]) -> Self[X]
+pub fn[X] Graph::symmetric_difference(Self[X], Self[X]) -> Self[X]
+pub fn[X] Graph::to_dot(Self[X]) -> String
+pub fn[X] Graph::transitive_closure(Self[X]) -> Self[X]
+pub fn[X] Graph::union(Self[X], Self[X]) -> Self[X]
+pub impl[X : Eq] Eq for Graph[X]
+pub impl[X : Show] Show for Graph[X]
+
+// Type aliases
+
+// Traits
+

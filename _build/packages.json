@@ -1,0 +1,88 @@
+{
+  "source_dir": "/Users/oboard/Development/moonbit-packages/moonetx",
+  "name": "oboard/moonetx",
+  "packages": [
+    {
+      "is-main": false,
+      "is-third-party": false,
+      "root-path": "/Users/oboard/Development/moonbit-packages/moonetx",
+      "root": "oboard/moonetx",
+      "rel": "",
+      "files": {
+        "/Users/oboard/Development/moonbit-packages/moonetx/digraph.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "/Users/oboard/Development/moonbit-packages/moonetx/graph.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "/Users/oboard/Development/moonbit-packages/moonetx/test.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "moonbitlang/core/double",
+          "alias": "double",
+          "fspath": "/Users/oboard/.moon/lib/core/double"
+        },
+        {
+          "path": "moonbitlang/core/prelude",
+          "alias": "prelude",
+          "fspath": "/Users/oboard/.moon/lib/core/prelude"
+        }
+      ],
+      "wbtest-deps": [
+        {
+          "path": "moonbitlang/core/prelude",
+          "alias": "prelude",
+          "fspath": "/Users/oboard/.moon/lib/core/prelude"
+        }
+      ],
+      "test-deps": [
+        {
+          "path": "moonbitlang/core/prelude",
+          "alias": "prelude",
+          "fspath": "/Users/oboard/.moon/lib/core/prelude"
+        }
+      ],
+      "artifact": "/Users/oboard/Development/moonbit-packages/moonetx/_build/wasm-gc/release/check/moonetx.mi"
+    }
+  ],
+  "deps": [],
+  "backend": "wasm-gc",
+  "opt_level": "release",
+  "source": null
+}
